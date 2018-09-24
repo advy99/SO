@@ -1,0 +1,33 @@
+#!/bin/bash
+
+
+BINARIO=/tmp/kernel32-3.0.4
+ISO=/tmp/Fedora14-x86-root_fs
+MEM=1024m
+
+if [ $# -eq 3 ]; then
+	BINARIO=$1
+	ISO=$2
+	MEM=$3
+elif [ $# -eq 2 ]; then
+	BINARIO=$1
+	ISO=$2
+elif [ $# -eq 1 ]; then
+	BINARIO=$1
+
+fi
+
+
+if [ ! -e $BINARIO ]; then
+	echo "Usando PATH por defecto."
+	cp /fenix/depar/lsi/UML/kernel32-3.0.4.gz /tmp/
+	gunzip /tmp/kernel32-3.0.4.gz
+fi
+
+if [ ! -e $ISO ]; then
+        echo "Usando ISO por defecto.";
+        cp /fenix/depar/lsi/UML/Fedora14-x86-root_fs.gz /tmp/
+        gunzip /tmp/Fedora14-x86-root_fs.gz
+fi
+
+$BINARIO ubda=$ISO mem=$MEM
