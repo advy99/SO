@@ -1,6 +1,5 @@
 #!/bin/bash
 
-USAR_ISO_RED=0
 BINARIO=/tmp/kernel32-3.0.4
 ISO=/tmp/Fedora14-x86-root_fs
 MEM=1024m
@@ -13,14 +12,12 @@ elif [ $# -eq 2 ]; then
 	BINARIO=$1
 	ISO=$2
 elif [ $# -eq 1 ]; then
-	if [ $1 -eq 1 ]; then
-		USAR_ISO_RED=1
-	fi
+	BINARIO=$1
 
 fi
 
 
-if [[ USAR_ISO_RED -eq 0 ]]; then
+if [ -d /fenix/ ]; then
 	if [ ! -e $BINARIO ]; then
 		echo "Usando PATH por defecto."
 		cp /fenix/depar/lsi/UML/kernel32-3.0.4.gz /tmp/
@@ -43,11 +40,11 @@ else
 		xz --decompress /tmp/kernel.xz
 	fi
 
-	chmod +x /tmp/kernel
-
 	BINARIO=/tmp/kernel
 	ISO=/tmp/Fedora14
 
 fi
+
+chmod +x $BINARIO
 
 $BINARIO ubda=$ISO mem=$MEM 
