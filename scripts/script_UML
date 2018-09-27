@@ -50,4 +50,4 @@ else
 
 fi
 
-$BINARIO ubda=$ISO rw mem=$MEM 
+$BINARIO ubda=$ISO mem=$MEM 
