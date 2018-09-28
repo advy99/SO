@@ -23,7 +23,7 @@ elif [ $# -eq 1 ]; then
 
 elif [ $# -eq 0 ]; then
 
-	if [ -d /fenix/ ]; then
+	if [ -d /fenix/depar/lsi/UML/ ]; then
 		if [ ! -e $BINARIO ]; then
 			echo "Usando PATH por defecto."
 			cp /fenix/depar/lsi/UML/kernel32-3.0.4.gz /tmp/
