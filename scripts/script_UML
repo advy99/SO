@@ -15,6 +15,7 @@ elif [ $# -eq 2 ]; then
 	BINARIO=$1
 	ISO=$2
 elif [ $# -eq 1 ]; then
+	#Instrucciones de uso
 	echo "Necesito al menos kernel e ISO "
 	echo "Uso: "
 	echo "   3 parametros: KERNEL, ISO y TAM_MEMORIA"
@@ -23,7 +24,9 @@ elif [ $# -eq 1 ]; then
 
 elif [ $# -eq 0 ]; then
 
+	#Comprobamos que estamos en la red de la UGR, para buscar los ficheros
 	if [ -d /fenix/depar/lsi/UML/ ]; then
+		#Si no existen, copiamos y extraemos
 		if [ ! -e $BINARIO ]; then
 			echo "Usando PATH por defecto."
 			cp /fenix/depar/lsi/UML/kernel32-3.0.4.gz /tmp/
@@ -36,6 +39,7 @@ elif [ $# -eq 0 ]; then
 				gunzip /tmp/Fedora14-x86-root_fs.gz
 		fi
 	else
+		#Si estamos en una red externa, los descargamos
 		if [ ! -e /tmp/Fedora14 ]; then
 			wget http://fs.devloop.org.uk/filesystems/Fedora14/Fedora14-x86-root_fs.bz2 -O /tmp/Fedora14.bz2
 			bzip2 -d /tmp/Fedora14.bz2
@@ -52,6 +56,8 @@ elif [ $# -eq 0 ]; then
 	fi
 fi
 
+#Damos permisos de ejecucio al binario
 chmod +x $BINARIO
 
+#Ejecutamos
 $BINARIO ubda=$ISO mem=$MEM 
