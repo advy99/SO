@@ -373,19 +373,19 @@ Cuando se abre un archivo:
 
 Implementación de archivos compartidos (o enlace):
 
-	1. Enlaces simbólicos:
-		
-		- Se crea una nueva entrada en el directorio, de tipo enlace y se almacena el camino de acceso absoluto o relativo del archivo a enlazar.
+1. Enlaces simbólicos:
+	
+	- Se crea una nueva entrada en el directorio, de tipo enlace y se almacena el camino de acceso absoluto o relativo del archivo a enlazar.
 
-		- Se puede usar en entornos distribuidos
+	- Se puede usar en entornos distribuidos
 
-		- Gran número de accesos a disco
+	- Gran número de accesos a disco
 
-	2. Enlaces absolutos (o hard):
-		
-		- Se crea una nueva entrada en el directorio y se copia la dirección de la estructura de datos con la información del archivo.
+2. Enlaces absolutos (o hard):
+	
+	- Se crea una nueva entrada en el directorio y se copia la dirección de la estructura de datos con la información del archivo.
 
-		-Problema al borrar los enlaces: solución -> Contador de enlaces
+	-Problema al borrar los enlaces: solución -> Contador de enlaces
 
 
 ## Distribución del Sistema de Archivos
@@ -394,9 +394,9 @@ Los sistemas de archivos se almacenan en discos que puedan dividirse en una o m�
 
 Formateo del disco:
 
-	- Físico: pone los sectores (cabecera y código de corrección de errores) por pista
+- Físico: pone los sectores (cabecera y código de corrección de errores) por pista
 
-	- Lógico: escribe la información que el SO necesita para conocer y mantener los contenidos del disco.
+- Lógico: escribe la información que el SO necesita para conocer y mantener los contenidos del disco.
 
 Bloque de arranque para inicializar el sistema localizado por bootstrap.
 
@@ -409,12 +409,12 @@ Como los archivos y directorios se mantienen tanto en MP como en disco, el siste
 
 Existen distintas formas de comprobar esto:
    
-	1. Comprobador de consistencia:
-      - Compara los datos en la estructura de directorios con los bloques de datos en disco y trata cualquier inconsistencia.
+1. Comprobador de consistencia:
+	- Compara los datos en la estructura de directorios con los bloques de datos en disco y trata cualquier inconsistencia.
 
-      - Más fácil en listas enlazadas que con bloques índices (listas enlazadas mejores que bloques índices)
+	- Más fácil en listas enlazadas que con bloques índices (listas enlazadas mejores que bloques índices)
 
-   2. Usar programas del sistema para realizar copias de seguridad de los datos de disco a otros dispositivos y de recuperación de los archivos perdidos
+2. Usar programas del sistema para realizar copias de seguridad de los datos de disco a otros dispositivos y de recuperación de los archivos perdidos
 
 
 ## Implementación de la gestión de archivos
@@ -427,9 +427,9 @@ Los i-nodos son creados al crear el SA.
 
 Si un proceso:
    
-	- Crea un archivo -> asigna un i-nodo (si no hay inodos no se puede crear el archivo)
-   
-	- Referencia a un archivo por su nombre -> se analizan los permisos y se lleva el i-nodo a memoria principal hasta que se cierre.
+- Crea un archivo -> asigna un i-nodo (si no hay inodos no se puede crear el archivo)
+
+- Referencia a un archivo por su nombre -> se analizan los permisos y se lleva el i-nodo a memoria principal hasta que se cierre.
 
 El número de i-nodos es limitado, queda marcado al crear el SA.
 
@@ -528,26 +528,26 @@ Se representa a un archivo y a un SA con una familia de estructuras en C.
 
 Existen 4 tipos de objetos primaros del VFS:
 
-   1. Objeto superblock: representa a un SA montado
+1. Objeto superblock: representa a un SA montado
 
-   2. Objeto i-node : representa a un archivo (cualquier tipo)
+2. Objeto i-node : representa a un archivo (cualquier tipo)
 
-   3. Objeto dentry: representa a una entrada a un directorio
+3. Objeto dentry: representa a una entrada a un directorio
 
-   4. Objeto file : representa a un archivo abierto y es una estructura por proceso, las anteriores son de sistema.
+4. Objeto file : representa a un archivo abierto y es una estructura por proceso, las anteriores son de sistema.
 
 
 Cada uno de los objetos tiene un vector de **operations** que contiene las funciones de cada SA. Se usa para distinguir de las llamadas de SA, por ejemplo, el write de extN es distinto a write de FAT.
 
 Estas funciones describen los métodos que el kernel invoca sobre los objetos primarios.
 
-	* super_operations : métodos que el kernel puede invocar sobre un SA. Ejemplo: write_inodo() y sync_fs()
+* super_operations : métodos que el kernel puede invocar sobre un SA. Ejemplo: write_inodo() y sync_fs()
 
-	* inode_operations : métodos que el kernel puede invocar sobre un archivo concreto. Ejemplo : create() y link()
+* inode_operations : métodos que el kernel puede invocar sobre un archivo concreto. Ejemplo : create() y link()
 
-	* dentry_operations : métodos que el kernel puede invocar sobre una entrada de directorio. Ejemplo: d_compare() y d_delete()
+* dentry_operations : métodos que el kernel puede invocar sobre una entrada de directorio. Ejemplo: d_compare() y d_delete()
 
-	* file_operations : métodos que un proceso puede invocar sobre un archivo abierto. Ejemplo: read() y write()
+* file_operations : métodos que un proceso puede invocar sobre un archivo abierto. Ejemplo: read() y write()
 
 
 
@@ -627,10 +627,10 @@ La llamada al sistema **mount** conecta un sistema de archivos existente y la ll
 
 El núcleo tiene una tabla de montaje con una entrada por cada sistema de archivos montado:
 
-	- Número de dispositivo que identifica el SA montado
-	- Puntero a un buffer que contiene una copia del superbloque
-	- Puntero al i-nodo raíz del SA montado
-	- Puntero al i-nodo del directorio del punto de montaje
+- Número de dispositivo que identifica el SA montado
+- Puntero a un buffer que contiene una copia del superbloque
+- Puntero al i-nodo raíz del SA montado
+- Puntero al i-nodo del directorio del punto de montaje
 
 
 
