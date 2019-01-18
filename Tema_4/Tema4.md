@@ -88,12 +88,12 @@ La organización de los directorios debe proporcionar:
 Consiste en controlar el acceso a archivos por parte de los usuarios en:
 
 - Lo que puede hacerse
-- Por quiénn puede realizarse
+- Por quién puede realizarse
 
 
 ### Listas y grupos de acceso
 
-La principal solución a la protección es hacer el acceso dependiente a la identificativo del usuario
+La principal solución a la protección es hacer el acceso dependiente del identificativo del usuario
 
 Las listas de acceso de usuarios individuales tienen el problema de la longitud
 
@@ -104,7 +104,7 @@ Solución con clases de usuario:
 - Público
 
 
-Propuesta alternatica
+Propuesta alternativa
 - Asociar un password con el archivo
 
 Problemas:
@@ -161,7 +161,7 @@ Traducir las direcciones lógicas del archivo en direcciones físicas del disco.
 
 Un sistema de archivos presenta dos problemas de diseño diferentes:
 
-   1. Definir cómo deve ver el usuario el SA
+   1. Definir cómo debe ver el usuario el SA
       * Definir un archivo y sus atributos
       * Definir operaciones permitidas sobre un archivo
 		* Definir la estructura de directorios
@@ -297,7 +297,7 @@ Para leer el i-ésimo bloque buscamos el puntero en la i-ésima entrada del bloq
 1. Posible desperdicio de espacio en los bloques índices
 
 2. Tamaño del bloque índice. Soluciones:
-	* Bloques índice enlazados
+   * Bloques índice enlazados
 
    * Bloques índice multinivel
       
