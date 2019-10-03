@@ -6,12 +6,12 @@ Todas las referencias a diapositivas se refieren a los apuntes usados por Patric
 
 Se basa en dos principios sobre memoria:
 
-1. Menor cantidad -  acceso más rápido (memoria cache)
+1. Menor cantidad -  acceso más rápido (memoria caché)
 2. Mayor cantidad - menor coste por byte (memoria principal)
 
 Los elementos más frecuentes interesa almacenarlos en la memoria más rápida.
 
-## Conceptos sobre caches
+## Conceptos sobre cachés
 
 ### Definición
 
@@ -21,10 +21,10 @@ Copia que puede ser accedida más rápidamente que el original
 
 Hacer que los accesos frecuentes a parte de la memoria sean eficientes
 
-Existen varias situaciones con la cache:
+Existen varias situaciones con la caché:
 
-1. Acierto de cache: ítem necesario en la cache (no hay que acceder a memoria)
-2. Fallo de cache  : ítem no está en cache, hay que realizar un acceso completo a memoria
+1. Acierto de caché: ítem necesario en la caché (no hay que acceder a memoria)
+2. Fallo de caché  : ítem no está en caché, hay que realizar un acceso completo a memoria
 
 Tiempo de Acceso Efectivo = probabilidad_acierto \* coste_acierto + probabilidad_fallo \* coste_fallo
 
@@ -453,20 +453,20 @@ Ejemplos de tipos  :
 
 La asignación y liberación de estructuras de datos es una de las operaciones más comunes en el kernel de un SO.
 
-Para agilizar la solicitud/liberación de memoria Linux usa el nivel de bloques.(No confundir cache con la cache de procesador)
+Para agilizar la solicitud/liberación de memoria Linux usa el nivel de bloques.(No confundir caché con la caché de procesador)
 
-El nivel de bloques actua como un nivel de cache de estructuras genérico:
+El nivel de bloques actua como un nivel de caché de estructuras genérico:
 
-1. Existe una cache para una de las distintas estructuras del SO. Por ejemplo:
+1. Existe una caché para una de las distintas estructuras del SO. Por ejemplo:
 
-   * task_struc cache
-   * inode cache
+   * task_struc caché
+   * inode caché
 
-  + Se basa en reutilizar la task_struct en la cache de un proceso que ha finalizado, en lugar de eliminar esta task_struct y crear una nueva para el nuevo proceso
+  + Se basa en reutilizar la task_struct en la caché de un proceso que ha finalizado, en lugar de eliminar esta task_struct y crear una nueva para el nuevo proceso
 
-2. Cada cache contiene múltiples bloques constituidos por una o más páginas físicas contiguas.
+2. Cada caché contiene múltiples bloques constituidos por una o más páginas físicas contiguas.
 
-3. Cada bloque aloja estructuras del tipo correspondiente a la cache.
+3. Cada bloque aloja estructuras del tipo correspondiente a la caché.
 
 ### Funcionamiento
 
@@ -620,7 +620,7 @@ Las direcciones virtuales deben convertirse a direcciones físicas mediante tabl
 
 ### Concepto
 
-La cache de páginas esta constituida por páginas físicas de RAM, y los contenidos se corresponden a bloques físicos de disco
+La caché de páginas esta constituida por páginas físicas de RAM, y los contenidos se corresponden a bloques físicos de disco
 
 El tamaño de la caché de páginas es dinámico
 
@@ -628,7 +628,7 @@ El dispositivo sobre el que se realiza la tecnica de caché se denomina almacén
 
 L/E de datos de/a disco
 
-Fuentes de datos para la cache:
+Fuentes de datos para la caché:
    * Archivos regulares
    * Dispositivos
    * Archivos proyectados en memoria
@@ -655,9 +655,9 @@ Linux soluciona el problema usando dos listas pseudo-LRU: active list e inactive
 
    * Pueden ser seleccionadas como victimas
 
-La cola de la inactive list serán los que llevan tiempo sin referenciar, al leer una página de memoria, metemos la página en la inactive list y la más antigua (la primera de la lista) la liberamos (eliminarmos la primera página de la lista, e insertamos al final la nueva página)
+La cola de la inactive list serán los que llevan tiempo sin referenciar, al leer una página de memoria, metemos la página en la inactive list y la más antigua (la primera de la lista), la liberamos (eliminarmos la primera página de la lista, e insertamos al final la nueva página)
 
-Si el bloque que hay en una entrada de la inactive list se llama dos veces, pasa a la  active list, y si la active list, se llena, el ultimo de la active list pasa a la inactive list.
+Si el bloque que hay en una entrada de la inactive list se llama dos veces, pasa a la active list, y si la active list, se llena, el ultimo de la active list pasa a la inactive list.
 
 ### Operaciones
 
