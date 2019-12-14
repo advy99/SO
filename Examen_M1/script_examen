@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#Mostramos la fecha
+
+date
+
+#mostramos el uso de memoria principal y swap 
+free -h
+
+#saltos de linea, para lectura mas facil
+echo
+echo

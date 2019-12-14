@@ -1,0 +1,449 @@
+
+#Antonio David Villegas Yeguas - Grupo B2
+
+
+#Ejercicio 1: usuario estudiante18
+
+	#creamos el grupo
+	[root@localhost ~]# groupadd estudiantes
+
+	#creamos el usuario, con opcion -d para modificar el directorio home por defecto, -e para dar una fecha de expiracion a la cuenta
+	[root@localhost ~]# useradd -d /home/trabajo18 -e 2018-11-22 -s /bin/csh -g estudiantes estudiante18
+
+	#contenido /home
+	[root@localhost ~]# ls /home
+	trabajo18
+
+
+	#contenido /etc/group
+	[root@localhost ~]# cat /etc/group
+	root:x:0:root
+	bin:x:1:root,bin,daemon
+	daemon:x:2:root,bin,daemon
+	sys:x:3:root,bin,adm
+	adm:x:4:root,adm,daemon
+	tty:x:5:
+	disk:x:6:root
+	lp:x:7:daemon,lp
+	mem:x:8:
+	kmem:x:9:
+	wheel:x:10:root
+	mail:x:12:mail
+	uucp:x:14:uucp
+	man:x:15:
+	games:x:20:
+	gopher:x:30:
+	video:x:39:
+	dip:x:40:
+	ftp:x:50:
+	lock:x:54:
+	audio:x:63:
+	nobody:x:99:
+	users:x:100:
+	utmp:x:22:
+	utempter:x:35:
+	cdrom:x:11:
+	tape:x:33:
+	dialout:x:18:
+	floppy:x:19:
+	saslauth:x:499:
+	sshd:x:74:
+	mailnull:x:47:
+	smmsp:x:51:
+	estudiantes:x:500:
+
+
+
+	#contenido /etc/passwd
+	[root@localhost ~]# cat /etc/passwd
+	root::0:0:root:/root:/bin/bash
+	bin:x:1:1:bin:/bin:/sbin/nologin
+	daemon:x:2:2:daemon:/sbin:/sbin/nologin
+	adm:x:3:4:adm:/var/adm:/sbin/nologin
+	lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+	sync:x:5:0:sync:/sbin:/bin/sync
+	shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+	halt:x:7:0:halt:/sbin:/sbin/halt
+	mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+	uucp:x:10:14:uucp:/var/spool/uucp:/sbin/nologin
+	operator:x:11:0:operator:/root:/sbin/nologin
+	games:x:12:100:games:/usr/games:/sbin/nologin
+	gopher:x:13:30:gopher:/var/gopher:/sbin/nologin
+	ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+	nobody:x:99:99:Nobody:/:/sbin/nologin
+	saslauth:x:499:499:"Saslauthd user":/var/empty/saslauth:/sbin/nologin
+	sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+	mailnull:x:47:47::/var/spool/mqueue:/sbin/nologin
+	smmsp:x:51:51::/var/spool/mqueue:/sbin/nologin
+	estudiante18:x:500:500::/home/trabajo18:/bin/csh
+
+
+
+	#contenido /etc/shadow
+	[root@localhost ~]# cat /etc/shadow
+	root::14789:0:99999:7:::
+	bin:*:14789:0:99999:7:::
+	daemon:*:14789:0:99999:7:::
+	adm:*:14789:0:99999:7:::
+	lp:*:14789:0:99999:7:::
+	sync:*:14789:0:99999:7:::
+	shutdown:*:14789:0:99999:7:::
+	halt:*:14789:0:99999:7:::
+	mail:*:14789:0:99999:7:::
+	uucp:*:14789:0:99999:7:::
+	operator:*:14789:0:99999:7:::
+	games:*:14789:0:99999:7:::
+	gopher:*:14789:0:99999:7:::
+	ftp:*:14789:0:99999:7:::
+	nobody:*:14789:0:99999:7:::
+	saslauth:!!:14916::::::
+	sshd:!!:14916::::::
+	mailnull:!!:14916::::::
+	smmsp:!!:14916::::::
+	estudiante18:!!:17826:0:99999:7::17857:
+
+	#contenido /home/trabajo18
+	[root@localhost ~]#ls -la /home/trabajo18/
+	total 20
+	drwx------ 2 estudiante18 estudiantes 4096 Oct 22 03:48 .
+	drwxr-xr-x 3 root         root        4096 Oct 22 03:48 ..
+	-rw-r--r-- 1 estudiante18 estudiantes   18 Jun 22  2011 .bash_logout
+	-rw-r--r-- 1 estudiante18 estudiantes  176 Jun 22  2011 .bash_profile
+	-rw-r--r-- 1 estudiante18 estudiantes  124 Jun 22  2011 .bashrc
+
+
+
+
+#Ejercicio 2
+
+	#creamos la unidad virtual en /dev/loop0
+	[root@localhost ~]# mknod /dev/loop0 b 7 0
+
+	#creamos un archivo de 60MB
+	[root@localhost ~]# dd if=/dev/zero of=/root/archivo_SA60 bs=6k count=10000
+	10000+0 records in
+	10000+0 records out
+	61440000 bytes (61 MB) copied, 0.26256 s, 234 MB/s
+
+	#asociamos el archivo de 60MB a la unidad virtual /dev/loop0 creada
+	[root@localhost ~]# losetup /dev/loop0 /root/archivo_SA60 
+
+	#Creamos la particion con formato ext3 en /dev/loop0 (le he puesto la etiqueta por comodidad para referirme a la particion)
+
+	[root@localhost ~]# mke2fs -L LABEL_ext3 -t ext3 /dev/loop0   
+	mke2fs 1.41.12 (17-May-2010)
+	Filesystem label=LABEL_ext3
+	OS type: Linux
+	Block size=1024 (log=0)
+	Fragment size=1024 (log=0)
+	Stride=0 blocks, Stripe width=0 blocks
+	15040 inodes, 60000 blocks
+	3000 blocks (5.00%) reserved for the super user
+	First data block=1
+	Maximum filesystem blocks=61603840
+	8 block groups
+	8192 blocks per group, 8192 fragments per group
+	1880 inodes per group
+	Superblock backups stored on blocks: 
+		8193, 24577, 40961, 57345
+
+	Writing inode tables: done                            
+	Creating journal (4096 blocks): done
+	Writing superblocks and filesystem accounting information: done
+
+	This filesystem will be automatically checked every 23 mounts or
+	180 days, whichever comes first.  Use tune2fs -c or -i to override.
+
+	
+
+
+
+	#informacion sobre la particion
+	[root@localhost ~]# tune2fs -l /dev/loop0
+	tune2fs 1.41.12 (17-May-2010)
+	Filesystem volume name:   LABEL_ext3
+	Last mounted on:          <not available>
+	Filesystem UUID:          512e73cf-0f82-4fc2-a304-1627caca76ba
+	Filesystem magic number:  0xEF53
+	Filesystem revision #:    1 (dynamic)
+	Filesystem features:      has_journal ext_attr resize_inode dir_index filetype sparse_super
+	Filesystem flags:         signed_directory_hash 
+	Default mount options:    (none)
+	Filesystem state:         clean
+	Errors behavior:          Continue
+	Filesystem OS type:       Linux
+	Inode count:              15040
+	Block count:              60000
+	Reserved block count:     3000
+	Free blocks:              52796
+	Free inodes:              15029
+	First block:              1
+	Block size:               1024
+	Fragment size:            1024
+	Reserved GDT blocks:      234
+	Blocks per group:         8192
+	Fragments per group:      8192
+	Inodes per group:         1880
+	Inode blocks per group:   235
+	Filesystem created:       Mon Oct 22 04:00:29 2018
+	Last mount time:          n/a
+	Last write time:          Mon Oct 22 04:00:29 2018
+	Mount count:              0
+	Maximum mount count:      23
+	Last checked:             Mon Oct 22 04:00:29 2018
+	Check interval:           15552000 (6 months)
+	Next check after:         Sat Apr 20 04:00:29 2019
+	Reserved blocks uid:      0 (user root)
+	Reserved blocks gid:      0 (group root)
+	First inode:              11
+	Inode size:	          128
+	Journal inode:            8
+	Default directory hash:   half_md4
+	Directory Hash Seed:      3beee6b0-a555-481a-a84d-5d29fc3f71e9
+	Journal backup:           inode blocks
+
+	#Numero de grupos de bloques
+	Block count:              60000
+	Blocks per group:         8192
+
+	#Numero de i-nodos
+	Inode count:              15040
+
+	#Numero de i-nodos por grupo
+	Inodes per group:         1880
+	
+	#Tamaño de i-nodo
+	Inode size:	          128
+
+
+	#Numero de bloques libres
+	Free blocks:              52796
+
+	#Tamaño de bloque
+	Block size:               1024
+
+
+
+
+
+	#Apartado B
+	
+	#Creamos el directorio donde lo vamos a montar
+	[root@localhost ~]# mkdir /mnt/mi_SA    
+	
+	#Lo montamos usando la orden mount, como no se han especificado opciones, se usan las por defecto (no es necesario ponerlas)
+	#Se podria haber usado   mount /dev/loop0 /mnt/mi_SA/ , pero me parece mas sencilla la sintaxis con etiquetas
+	[root@localhost ~]# mount -L LABEL_ext3 /mnt/mi_SA/
+	[ 2462.410000] EXT3-fs: barriers not enabled
+	[ 2462.410000] kjournald starting.  Commit interval 5 seconds
+	[ 2462.410000] EXT3-fs (loop0): using internal journal
+	[ 2462.410000] EXT3-fs (loop0): mounted filesystem with writeback data mode
+
+
+
+	#SA montados en el SO
+
+	[root@localhost ~]# cat /proc/mounts 
+	rootfs / rootfs rw 0 0
+	/dev/root / ext4 rw,noatime,user_xattr,acl,barrier=1,data=ordered 0 0
+	none /proc proc rw,nosuid,nodev,noexec,relatime 0 0
+	none /sys sysfs rw,nosuid,nodev,noexec,relatime 0 0
+	devpts /dev/pts devpts rw,relatime,gid=5,mode=620 0 0
+	/tmp /tmp tmpfs rw,relatime 0 0
+	none /proc/sys/fs/binfmt_misc binfmt_misc rw,relatime 0 0
+	/dev/loop0 /mnt/mi_SA ext3 rw,relatime,errors=continue,barrier=0,data=writeback 0 0
+
+	#como vemos, la informacion dada por el archivo /proc/mounts nos muestra la informacion de los SA montados, con el formato usado en el archivo /etc/fstab, es decir:
+
+
+	<sistema_de_ficheros>   <punto_montaje>    <tipo_SA> <opciones>  <dump> <pass>
+
+	#Donde:
+
+	<sistema_de_ficheros> archivo de bloques de /dev o podemos referirnos a el por su etiqueta, usando LABEL=<label>
+
+	<punto_montaje> carpeta donde se va a montar
+
+	<tipo_SA> tipo, ext3, ext4, auto ,...
+
+	<opciones> ro , rw, async ... (mirar man mount)
+
+	<dump> si su valor es distinto de 0 indica la frecuencia con la que se realizará una copia de seguridad del SA.
+
+	<pass> durante el arranque del sistema este campo especifica el orden en el que la orden fsck realizará las comprobaciones sobre los SAs.
+
+	#en especifico, vemos como nuestro sistema de archivos (/dev/loop0), ha sido montado en /mnt/mi_SA, usa una particion de tipo ext3, y tiene las opciones por defecto , entre ellas, permisos de lectura y escritura, actualizacion de i-nodos segun modificaciones (relatime), entre otros. Ademas, no le defimos la frecuencia de copia de seguridad, dump=0, y no se realizaran revisiones con fsck, ya que pass=0
+
+
+
+
+
+
+
+
+#Ejercicio 3
+
+
+	#a
+
+	[root@localhost ~]# ps -eo pid,ppid,stat,pri,user
+	  PID  PPID STAT PRI USER
+	    1     0 Ss    19 root
+	    2     0 S     19 root
+	    3     2 S     19 root
+	    4     2 S     19 root
+	    5     2 S     19 root
+	    6     2 S     41 root
+	    7     2 S    139 root
+	    8     2 S<    39 root
+	    9     2 S<    39 root
+	   10     2 S     19 root
+	  115     2 S     19 root
+	  117     2 S     19 root
+	  118     2 S<    39 root
+	  134     2 S<    39 root
+	  135     2 S     19 root
+	  143     2 S     19 root
+	  144     2 S     19 root
+	  192     2 S     19 root
+	  216     2 S     19 root
+	  218     2 S<    39 root
+	  240     2 S<    39 root
+	  241     2 S<    39 root
+	  246     2 S<    39 root
+	  248     2 S<    39 root
+	  263     2 S<    39 root
+	  961     2 S     19 root
+	  962     2 S<    39 root
+	 1048     2 S     19 root
+	 1086     1 S<sl  23 root
+	 1104     1 Sl    19 root
+	 1129     1 Ss    19 root
+	 1155     1 Ss    19 smmsp
+	 1166     1 Ss    19 root
+	 1178     1 Ss    19 root
+	 1180  1178 Ss    19 root
+	 1218     2 S<    39 root
+	 1232     1 Ss    19 root
+	 1255     2 S     19 root
+	 1272     2 S     19 root
+	 1282  1180 R+    19 root
+
+
+
+
+	
+
+	#b
+	
+	#con la orden free
+	[root@localhost ~]# free
+		     total       used       free     shared    buffers     cached
+	Mem:       1019572      40348     979224          0       4576      17168
+	-/+ buffers/cache:      18604    1000968
+	Swap:            0          0          0
+
+
+	#podemos ver el tiempo que tarda con la orden time
+	[root@localhost ~]# time free
+		     total       used       free     shared    buffers     cached
+	Mem:       1019572      40348     979224          0       4580      17172
+	-/+ buffers/cache:      18596    1000976
+	Swap:            0          0          0
+
+	real	0m0.014s
+	user	0m0.000s
+	sys	0m0.000s
+
+
+
+	#c
+	
+	[root@localhost ~]# ls -la /dev
+	total 20
+	drwxr-xr-x  5 root root 4096 Oct 22 04:40 .
+	dr-xr-xr-x 22 root root 4096 Oct 22 04:40 ..
+	crw-------  1 root root 5, 1 Oct 22 04:40 console
+	crw-rw-rw-  1 root root 1, 7 Nov  3  2010 full
+	-rw-r--r--  1 root root   54 Sep 13  2011 kmsg
+	srw-rw-rw-  1 root root    0 Oct 22 04:40 log
+	brw-r--r--  1 root root 7, 0 Oct 22 04:00 loop0
+	drwxr-xr-x  2 root root 4096 Nov  3  2010 mapper
+	crw-rw-rw-  1 root root 1, 3 Nov  3  2010 null
+	crw-rw-rw-  1 root root 5, 2 Nov  3  2010 ptmx
+	drwxr-xr-x  2 root root    0 Oct 22 04:40 pts
+	crw-rw-rw-  1 root root 1, 8 Nov  3  2010 random
+	drwxr-xr-x  2 root root 4096 Nov  3  2010 shm
+	lrwxrwxrwx  1 root root   15 Nov  3  2010 stderr -> /proc/self/fd/2
+	lrwxrwxrwx  1 root root   15 Nov  3  2010 stdin -> /proc/self/fd/0
+	lrwxrwxrwx  1 root root   15 Nov  3  2010 stdout -> /proc/self/fd/1
+	crw-rw-rw-  1 root root 5, 0 Nov  3  2010 tty
+	crw--w----  1 root tty  4, 0 Oct 22 04:42 tty0
+	cr--r--r--  1 root root 1, 9 Nov  3  2010 urandom
+	crw-rw-rw-  1 root root 1, 5 Nov  3  2010 zero
+
+	#Hay archivos de enlace simbolico, ya que como vemos en la salida de ls -la /dev , si la primera letra de la linea es una l (link) es un enlace simbolico. Vemos el archivo al cual enlaza, ya que ls nos lo muestra usando una flecha (->), por ejemplo, el archivo /dev/stderr enlaza a /proc/self/fd/2
+
+	#Depende del tipo de enlace, si es un enlace duro, el tamaño del archivo sera el mismo, porque en realidad es como si fueran un unico archivo en disco, mientras que si es un enlace blando, ocupara lo que necesite de metadatos para referirse al archivo al que apunta
+
+	
+
+
+
+	#d
+
+	#Creamos el archivo donde iran los resultados
+	advy99@ei143094:~/Escritorio/Home/2do/examen_SO$ touch /home/advy99/Escritorio/Home/datosMem
+
+	#creamos un archivo crontab, para ejecutarlo con lo que nos piden
+	#el archivo tendra la siguiente linea	
+
+	0    20     *    11     5        /home/advy99/Escritorio/Home/2do/examen_SO/script_examen >> /home/advy99/Escritorio/Home/datosMem
+
+
+	#recordemos que el archivo crontab sigue la siguiente sintaxis
+	minuto    hora     dia-del-mes    mes     dia-de-la-semana        orden
+
+	#luego se ejecutara a las 20 horas, minuto 0, de cualquier dia del mes, el mes 11 (noviembre), el dia de la semana 5 (viernes) y el script dado, que contiene la orden free que nos dara la informacion, redirigiendo la salida a datosMem, usando >> para no borrar las entradas anteriores
+
+	#para probarlo, usaremos la siguiente linea
+
+	*    *     *    10     *        /home/advy99/Escritorio/Home/2do/examen_SO/script_examen >> /home/advy99/Escritorio/Home/datosMem
+
+	#que quiere decir, a cualquier hora, de cualquier minuto, de cualquier dia del mes, del mes 10 (octubre) de cualquier dia de la semana
+
+	
+	#pasados varios minutos, el contenido de datosMem es: 
+
+	advy99@ei143094:~/Escritorio/Home$ cat datosMem 
+	lun oct 22 11:08:01 CEST 2018
+		      total        used        free      shared  buff/cache   available
+	Memoria:        7,7G        578M        4,3G        179M        2,9G        6,2G
+	Swap:          511M          0B        511M
+
+
+	lun oct 22 11:09:01 CEST 2018
+		      total        used        free      shared  buff/cache   available
+	Memoria:        7,7G        579M        4,3G        177M        2,9G        6,3G
+	Swap:          511M          0B        511M
+
+
+	lun oct 22 11:10:01 CEST 2018
+		      total        used        free      shared  buff/cache   available
+	Memoria:        7,7G        577M        4,3G        173M        2,9G        6,3G
+	Swap:          511M          0B        511M
+
+
+	lun oct 22 11:11:01 CEST 2018
+		      total        used        free      shared  buff/cache   available
+	Memoria:        7,7G        578M        4,3G        173M        2,9G        6,3G
+	Swap:          511M          0B        511M
+
+
+	lun oct 22 11:12:01 CEST 2018
+		      total        used        free      shared  buff/cache   available
+	Memoria:        7,7G        577M        4,3G        168M        2,9G        6,3G
+	Swap:          511M          0B        511M
+
+
+
